@@ -1,0 +1,222 @@
+@import "../../../styles/colors";
+
+input {    
+    background-color:transparent !important;
+    border: 1px white solid;
+    color:white !important;
+}
+
+.label-passwordpolicy {
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    font-style: normal !important;
+    color: #27B9F5 !important;
+    font-stretch: normal !important;
+    letter-spacing: normal;
+    line-height: normal;
+    // margin-left: 20px !important;
+    margin-right: 20px !important;
+    margin-top: 0px !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    -webkit-appearance: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    border-width: 0 !important;
+}
+
+input[type=checkbox] {
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    width: 12px;
+    height: 12px;
+  }
+   
+input[type=checkbox]:focus {
+    width: 12px;
+    height: 12px;
+    outline:1px solid  #26aae1;
+}
+
+.label-rememberme {
+    font-size:13px;
+    line-height: 1.23;
+}
+.form-email, .form-password { 
+    margin-top: 5vh;
+}
+
+
+.label-signup {
+    font-size:24px;
+    font-weight:500;
+    color:#ffffff;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: sub;
+}
+
+
+.signup-side-content {
+    border-radius: 20px;
+    background-color: #314350;
+    min-height:40px;
+    color:white;
+    padding:32px;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    margin-bottom: 80px;
+}
+
+#login_remember_me {
+    margin-top: 8px !important;
+}
+
+.lbl-signup-sidecontent {
+    font-size: 12px;
+    line-height: 1.83;
+    font-weight: 300;
+    color: $color-white;
+    margin-top: 10px;
+}
+
+.lbl-required {
+    margin-top: 7px;
+}
+
+.lbl-support-info {
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 500;
+    color: $color-white;
+}
+
+.lbl-steps {
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-white;
+}
+
+#div-content {
+    height : '100%' !important;
+    overflow: none;
+}
+
+.btn-continue-setup, .btn-browse-patterns {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.div-signup1-buttons {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.form-signup-firstname, .form-signup-lastname, .form-signup-email, .form-signup-password, .form-signup-confirmpassword {
+    width: 49% !important;
+}
+
+.div-terms-policy{
+    margin-top: 5px;
+}
+
+.div-signup-copyright {
+    margin-top:30px;
+}
+
+@media (max-width: 767px) {
+    #div-content {
+        overflow: auto;
+        border-radius: 5px !important;
+        background-color: #2b3b48 !important; 
+        box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.5);
+    }
+    
+    .navbar-title {
+        font-size:24px !important;
+        font-weight:500 !important;
+        color:#ffffff !important;;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        margin-top: 14px !important;
+    }
+
+    nav.navbar {
+        height: 50px !important;
+    }
+
+    .div-signup-header {
+        display: none;
+    }
+
+    nav.navbar button.btn-burger
+    {
+        color:white;
+        border:none;
+        background-color: transparent !important;
+        font-size:18px;
+        margin:11px 10px 16px 28px !important;
+        float:left;
+    }
+
+    .lbl-sidecontent-mobile-break {
+        display: none;
+    }
+
+    p {
+        margin: 0px !important;
+    }
+
+    .form-control {
+        border: solid 1px #e6e3e3 !important;
+        background-color: #1b2932 !important;
+    }
+
+    .signup-side-content {
+        display: none;
+        border-radius: 0px !important;
+        background-color: transparent !important;
+        color: $color-white;
+        padding:0px !important;
+        font-size: 12px;
+        font-weight: 300;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+    }
+
+    .btn-continue-setup, .btn-browse-patterns {
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .div-signup1-buttons {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }    
+
+    
+    .form-signup-firstname, .form-signup-lastname, .form-signup-email, .form-signup-password, .form-signup-confirmpassword {
+        width: 100% !important;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .layout-signup-form-line {
+        padding: 0px !important;
+    }
+}
+
