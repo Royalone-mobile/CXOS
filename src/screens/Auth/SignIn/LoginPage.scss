@@ -29,8 +29,8 @@ input[type=checkbox] {
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
   }
    
 input[type=checkbox]:focus {
@@ -110,6 +110,8 @@ input[type=checkbox]:focus {
         top: 50%;
         transform: translateY(-50%);
         padding-right: 20px;
+        left: 0;
+        right: 0;
     }
 }
 
@@ -128,6 +130,51 @@ input[type=checkbox]:focus {
     display: none;
 }
 
+
+.lbl-checkout {
+    font-weight: 500;
+    font-size: 24px;
+    color: $color-white;
+    margin-bottom: 25px;
+}
+
+.lbl-click-signin {
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.lbl-login-sidecontent {
+    font-size:12px;
+    font-weight: 300;
+    color:$color-white;
+    margin-top: 10px;
+}
+
+.lbl-taketour, .lbl-signin {
+    font-size: 13px; 
+    padding-right: 10px;
+}
+
+.ant-input {
+    font-size: 13px !important;
+    padding: .575rem .75rem !important;
+}
+
+  
+@media only screen 
+and (min-device-width : 411px) 
+and (max-device-width : 736px) { 
+    .side-content {
+        >div {
+            position: inherit;
+            top: 0 !important;
+            transform: none;
+            padding-right: 0px;
+            margin-left: 10%;
+        }
+    }
+}
+
 @media (max-width: 767px) {
     .div-signin {
         >div {
@@ -135,7 +182,6 @@ input[type=checkbox]:focus {
             top: 0 !important;
             transform: none;
             padding-right: 0px;
-            // width: 80%;
             margin-left: 10%;
         }
     }
@@ -151,6 +197,7 @@ input[type=checkbox]:focus {
         display: none;
     }
 
+   
     .navbar-title {
         font-size:24px !important;
         font-weight:500 !important;
@@ -240,31 +287,4 @@ input[type=checkbox]:focus {
     .side-content {
         display: none;
     }
-
 }
-
-.lbl-checkout {
-    font-weight: 500;
-    font-size: 24px;
-    color: $color-white;
-    margin-bottom: 25px;
-}
-
-.lbl-click-signin {
-    font-weight: 500;
-    font-size: 12px;
-}
-
-.lbl-login-sidecontent {
-    font-size:12px;
-    font-weight: 300;
-    color:$color-white;
-    margin-top: 10px;
-}
-
-.lbl-taketour, .lbl-signin {
-    font-size: 13px; 
-    padding-right: 10px;
-}
-
-

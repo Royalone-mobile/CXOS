@@ -14,7 +14,11 @@ import IcoSupport from '../../../assets/icons/support.png';
 import IcoClose from '../../../assets/icons/ico-close.png';
 import IcoInfo from '../../../assets/icons/ico-info.png';
 import './SignUpPage.scss';
+import {signup} from '../../../services/api/httpclient';
+import FloatingOutlineInput from '../../../components/FloatingOutlineInput/FloatingOutlineInput';
+import { Form, Checkbox } from 'antd';
 
+const FormItem = Form.Item;
 
 class SignUpPage extends Component {
     constructor(props) {
@@ -22,7 +26,7 @@ class SignUpPage extends Component {
         this.state = { 
             popoverOpen: false, 
             expanded:'', 
-            mobile_info: false 
+            mobile_info: false,
         };
     }
 
@@ -49,10 +53,68 @@ class SignUpPage extends Component {
     hideSideContent = () => {
         this.setState({mobile_info:false});
     }   
-
+    
     onContinueSetup = () => {
-        console.log('onContinueSetup');
-        this.props.history.push('/addorganization');
+        var formData = this.props.form.getFieldsValue();
+        signup(formData).then(ret=>{
+            console.log(ret);
+            let noError = true;
+            if(ret.data.errors.username) {
+                this.props.form.setFields({
+                    username: {
+                        value: formData.username,
+                        errors: [new Error(ret.data.errors.username)],
+                    }
+                });
+                noError = false;
+            }
+
+            if(ret.data.errors.first_name) {
+                this.props.form.setFields({
+                    first_name: {
+                        value: formData.first_name,
+                        errors: [new Error(ret.data.errors.first_name)],
+                    }
+                });
+                noError = false;
+            }
+
+
+            if(ret.data.errors.last_name) {
+                this.props.form.setFields({
+                    last_name: {
+                        value: formData.last_name,
+                        errors: [new Error(ret.data.errors.last_name)],
+                    }
+                });
+                noError = false;
+            }
+
+            if(ret.data.errors.password1) {
+                this.props.form.setFields({
+                    password1: {
+                        value: formData.password1,
+                        errors: [new Error(ret.data.errors.password1)],
+                    }
+                });
+                noError = false;
+            }
+
+            if(ret.data.errors.password2) {
+                this.props.form.setFields({
+                    password2: {
+                        value: formData.password2,
+                        errors: [new Error(ret.data.errors.password2)],
+                    }
+                });
+                noError = false;
+            }
+
+            if(noError)
+                this.props.history.push('/addorganization');
+        }, err=>{
+            console.log(err);
+        });
     }
 
     renderPasswordPolicyDesktop = () => {
@@ -96,9 +158,39 @@ class SignUpPage extends Component {
             </UncontrolledPopover>
         );
     }
-    
+
+    onFirstNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            first_name: evt.target.value,
+        });
+    }
+
+    onLastNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            last_name: evt.target.value,
+        });
+    }
+
+    onUserNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            username: evt.target.value,
+        });
+    }
+
+    onPasswordChange = (evt) => {
+        this.props.form.setFieldsValue({
+            password1: evt.target.value,
+        });
+    }
+
+    onConfirmChange = (evt) => {
+        this.props.form.setFieldsValue({
+            password2: evt.target.value,
+        });
+    }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
             <div id="div-content" style={{ height : '100%'}}>
                 {this.renderPasswordPolicyDesktop()}
@@ -128,11 +220,8 @@ class SignUpPage extends Component {
                                 </div>
                             </PopoverBody>
                         </Popover>
-
-                        
                     </div>
 
-                    
                     <div className="float-right">
                         {this.state.mobile_info?<img className="btn-hide-info" src={IcoClose} style={{ marginRight:'25px'}} onClick={this.hideSideContent.bind(this)}/>:<img className="btn-show-info" src={IcoInfo} style={{ marginRight:'25px', width:'22px', height:'22px'}} onClick={this.showSideContent.bind(this)}/>}
                     </div>
@@ -140,7 +229,7 @@ class SignUpPage extends Component {
 
                 <div className="container" style={{ height : 'calc(100% - 120px)', paddingTop: '20px', paddingBottom: '20px'}}>
                     <div className="row" style={{ height : '100%'}}>
-                        <div className={'col-lg-7 col-md-7 ' +  (this.state.mobile_info?'disp-none':'disp-block')} >
+                        <div className={'col-lg-7 col-md-7 div-signup ' +  (this.state.mobile_info?'disp-none':'disp-block')} >
                             <div style={{paddingBottom:'20px'}}>
                                 <div className="div-signup-header">
                                     <div className="float-left">
@@ -164,39 +253,74 @@ class SignUpPage extends Component {
                                 </div>
                                 
 
-                                <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "text" className="form-control float-left form-signup-firstname" placeholder="First Name*" required/>
-                                    <input type = "text" className="form-control float-right form-signup-lastname" placeholder="Last Name*" required/>
-                                </div>
+                                <Form >
+                                    <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
+                                        <FormItem className="float-left form-signup-firstname">
+                                            {getFieldDecorator('first_name', {
+                                                rules: [{required: true, message: 'Please input your firstname!'}, {validator: this.checkEmail}],
+                                            })(
+                                                <FloatingOutlineInput type="text" label='First Name*' onChange={this.onFirstNameChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                        <FormItem className="float-right form-signup-lastname">
+                                            {getFieldDecorator('last_name', {
+                                                rules: [{required: true, message: 'Please input your lastname!'}, {validator: this.checkEmail}],
+                                            })(
+                                                <FloatingOutlineInput type="text" label='Last Name*' onChange={this.onLastNameChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                    </div>
 
-                                <div className="layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "email" className="form-control form-signup-email" placeholder="Email Address*" required/>
-                                </div>
+                                    <div className="layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
+                                        <FormItem className="form-signup-email">
+                                            {getFieldDecorator('username', {
+                                                rules: [{required: true, message: 'Please input your lastname!'}],
+                                            })(
+                                                <FloatingOutlineInput type="email" label='Email Address*' onChange={this.onUserNameChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                    </div>
 
-                                <hr className="clearfix desktop-only" style={{paddingTop:'10px', paddingBottom:'10px'}} />
-                                
+                                    <hr className="clearfix desktop-only" style={{paddingTop:'10px', paddingBottom:'10px'}} />
+                                    <div className="layout-signup-form-line">
+                                        <FormItem className="float-left form-signup-password">
+                                            {getFieldDecorator('password1', {
+                                                rules: [{required: true, message: 'Please input your password!'}],
+                                            })(
+                                                <FloatingOutlineInput type="password" label='Password*' onChange={this.onPasswordChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
 
-                                <div className="layout-signup-form-line">
-                                    <input type = "password" className="form-control float-left form-signup-password" placeholder="Password*" required/>
-                                    <div className="mobile-only">
-                                        <Button id="Popover2" type="button" className="label-passwordpolicy">
+                                        <div className="mobile-only">
+                                            <Button id="Popover2" type="button" className="label-passwordpolicy">
+                                                Password policy
+                                            </Button>
+                                        </div>
+
+                                        <FormItem className="float-right form-signup-password">
+                                            {getFieldDecorator('password2', {
+                                                rules: [{required: true, message: 'Please confirm your password!'}],
+                                            })(
+                                                <FloatingOutlineInput type="password" label='Confirm Password*' onChange={this.onConfirmChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                    </div>
+
+                                    <div style={{paddingTop:'5px'}} className="clearfix desktop-only">
+                                        <Button id="Popover3" type="button" className="label-passwordpolicy">
                                             Password policy
-                                        </Button></div>
-                                    <input type = "password" className="form-control float-right form-signup-confirmpassword" placeholder="Confirm Password*" required/>
-                                </div>
-
-                                <div style={{paddingTop:'5px'}} className="clearfix desktop-only">
-                                    <Button id="Popover3" type="button" className="label-passwordpolicy">
-                                        Password policy
-                                    </Button>
-                                </div>
-
-                                <div className="form-check v-gap clearfix" style={{marginTop:'10px'}}>
-                                    <input className="form-check-input" style={{marginTop:'8px'}} type="checkbox" name="login_remember_me" id="login_remember_me" value="true"/>
-                                    <label className="label-rememberme form-check-label" htmlFor="login_remember_me">
-                                        Check here to indicate that you have read and agree to the terms of the <br/><NavLink to={'/passwordpolicy/'}>CXOS Customer Agreement</NavLink>
-                                    </label>
-                                </div>
+                                        </Button>
+                                    </div>
+                                </Form>
+                                            
+                                <Checkbox style={{color:'white', marginTop:'15px', fontSize:'13px', marginLeft:'10px', marginBottom:'10px'}}>
+                                    Check here to indicate that you have read and agree to the terms of the <br/>&ensp;&ensp;&ensp;&nbsp;<NavLink to={'/passwordpolicy/'}>CXOS Customer Agreement</NavLink>
+                                </Checkbox>
 
                                 <div className="text-center div-signup1-buttons">
                                     <button type="submit" className="btn btn-green-gradient btn-browse-patterns">
@@ -241,7 +365,8 @@ class SignUpPage extends Component {
 }
 
 SignUpPage.propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    form :  PropTypes.object
 };
 
 
@@ -255,4 +380,6 @@ const mapDispatchToProps = dispatch => (
     bindActionCreators({}, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
+const WrappedSignUpPage = Form.create()(SignUpPage);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedSignUpPage);

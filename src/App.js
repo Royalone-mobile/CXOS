@@ -10,7 +10,6 @@ import { createAppStore } from './store/AppStore';
 
 import { AppRouter } from './routers/AppRouter';
 
-
 // COMPONENT
 
 export const App = () => (

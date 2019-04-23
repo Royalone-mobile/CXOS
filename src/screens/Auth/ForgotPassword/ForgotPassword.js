@@ -14,7 +14,10 @@ import IcoSupport from '../../../assets/icons/support.png';
 import IcoClose from '../../../assets/icons/ico-close.png';
 import IcoInfo from '../../../assets/icons/ico-info.png';
 import Iframe from '../../../components/Iframe/Iframe';
-
+import {resetPassword} from '../../../services/api/httpclient';
+import FloatingOutlineInput from '../../../components/FloatingOutlineInput/FloatingOutlineInput';
+import { Form } from 'antd';
+const FormItem = Form.Item;
 
 const iframe = '<iframe width="80%" height="315" src="https://www.youtube.com/embed/ybcV0sJ_T_I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 
@@ -26,7 +29,12 @@ class ForgotPassword extends Component {
             expanded:'', 
             mobile_info: false,
             steps: 1,
-            navtitle:'Sign In Help'
+            navtitle:'Sign In Help',
+            username: '',
+            reset_code: '',
+            email_fragment:'',
+            password1: '',
+            password2: ''
         };
     }
 
@@ -63,19 +71,102 @@ class ForgotPassword extends Component {
             this.setState({steps}, () => {
                 this.modifyNavTitle();
             });
-        }
-            
+        }       
     }
 
     onContinue = () => {
         let steps = this.state.steps;
+        switch(steps) {
+            case 1: 
+                this.getResetCode();
+                break;
+            case 2:
+                this.verifyWithResetCode();
+                break;
+            case 3:
+                this.resetPassword();
+                break;
+        }
+    }
+    
+    switchStep = () => {
+        let {steps} = this.state;
         steps += 1;
-
         if(steps<=3) {
             this.setState({steps}, () => {
                 this.modifyNavTitle();
             });
         }
+    }
+
+    resetPassword = () => {
+        var formData = this.props.form.getFieldsValue();
+
+        resetPassword(formData).then(ret=>{
+            if(ret.data.errors.password) {
+                this.props.form.setFields({
+                    password: {
+                        value: formData.password,
+                        errors: [new Error(ret.data.errors.password)],
+                    }
+                });
+                return;
+            }
+
+            if(ret.data.errors.confirm) {
+                this.props.form.setFields({
+                    confirm: {
+                        value: formData.confirm,
+                        errors: [new Error(ret.data.errors.confirm)],
+                    }
+                });
+                return;
+            }
+            
+            this.switchStep();
+        }, err=>{
+            console.log(err);
+        });
+    }
+
+    verifyWithResetCode = () => {
+        var formData = this.props.form.getFieldsValue();
+        resetPassword(formData).then(ret=>{
+            if(ret.data.errors.reset_code) {
+                this.props.form.setFields({
+                    reset_code: {
+                        value: formData.reset_code,
+                        errors: [new Error(ret.data.errors.reset_code)],
+                    }
+                });
+                return;
+            }
+            this.switchStep();
+        }, err=>{
+            console.log(err);
+        });
+    }
+
+    getResetCode = () => {
+        var formData = this.props.form.getFieldsValue();
+
+        resetPassword(formData).then(ret=>{
+            if(ret.data.errors.username) {
+                this.props.form.setFields({
+                    username: {
+                        value: formData.username,
+                        errors: [new Error(ret.data.errors.username)],
+                    }
+                });
+                return;
+            }
+
+            let email_fragment = ret.data.email_fragment;
+            this.setState({email_fragment});
+            this.switchStep();
+        }, err=>{
+            console.log(err);
+        });
     }
 
     modifyNavTitle = () => {
@@ -93,8 +184,33 @@ class ForgotPassword extends Component {
         this.setState({navtitle});
     }
 
+    onUserNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            username: evt.target.value,
+        });
+    }
+
+    onResetCodeChange = (evt) => {
+        this.props.form.setFieldsValue({
+            reset_code: evt.target.value,
+        });
+    }
+
+    onPasswordChange = (evt) => {
+        this.props.form.setFieldsValue({
+            password: evt.target.value,
+        });
+    }
+
+    onConfirmChange = (evt) => {
+        this.props.form.setFieldsValue({
+            confirm: evt.target.value,
+        });
+    }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
+        let {email_fragment} = this.state;
         return (
             <div id="div-content" style={{height:'100%'}}>
                 <nav className="navbar">
@@ -144,17 +260,46 @@ class ForgotPassword extends Component {
                                 
                                 <hr/>
 
-                                {this.state.steps==1?<input type = "email" className="form-control form-email" placeholder="Email" required/>:null}
-                                
-                                {this.state.steps==2?<div>
-                                    <input type = "number" className="form-control form-email" placeholder="Enter the 6-digit code" required/>
-                                    <span className="label-sentcode">We sent a code to a******n@gmail.com</span>
-                                </div>:null}
+                                <Form >
+                                    <FormItem className={this.state.steps===1?'disp-block':'disp-none'}>
+                                        {getFieldDecorator('username', {
+                                            rules: [{required: true, message: 'Please input your email!'}],
+                                        })(
+                                            <FloatingOutlineInput type="email" label='Email' onChange={this.onUserNameChange.bind(this)} style={{marginTop:'2vh'}}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
 
-                                {this.state.steps==3?<div>
-                                    <input type = "password" className="form-control form-password" placeholder="Password" required/>
-                                    <input type = "password" className="form-control form-password" placeholder="Confirm Password" required/>
-                                </div>:null}
+                                    <div className={this.state.steps===2?'disp-block':'disp-none'}>
+                                        <FormItem >
+                                            {getFieldDecorator('reset_code', {
+                                                rules: [{required: true, message: 'Please enter digit code!'}],
+                                            })(
+                                                <FloatingOutlineInput type="number" label='Enter the 6-digit code' onChange={this.onResetCodeChange.bind(this)} style={{marginTop:'2vh'}}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>:<span className="label-sentcode">We sent a code to {email_fragment}</span>
+                                    </div>
+
+                                    <div className={this.state.steps===3?'disp-block':'disp-none'}>
+                                        <FormItem>
+                                            {getFieldDecorator('password', {
+                                                rules: [{required: true, message: 'Please input your password!'}],
+                                            })(
+                                                <FloatingOutlineInput type="password" label='Password' onChange={this.onPasswordChange.bind(this)} style={{marginTop:'2vh'}}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                        <FormItem>
+                                            {getFieldDecorator('confirm', {
+                                                rules: [{required: true, message: 'Please input your password!'}],
+                                            })(
+                                                <FloatingOutlineInput type="password" label='Confirm Password' onChange={this.onConfirmChange.bind(this)} style={{marginTop:'5vh'}}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+                                    </div>
+                                </Form>
 
                                 <div className="text-center v-gap" style={{marginTop:'20px'}}>
                                     <button onClick={this.onCancel.bind(this)} className="btn btn-dark btn-sm btn-forgotpassword-cancel">
@@ -211,7 +356,8 @@ class ForgotPassword extends Component {
 }
 
 ForgotPassword.propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    form :  PropTypes.object
 };
 
 
@@ -224,4 +370,6 @@ const mapDispatchToProps = dispatch => (
     bindActionCreators({}, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+const WrappedForgotPassword = Form.create()(ForgotPassword);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedForgotPassword);

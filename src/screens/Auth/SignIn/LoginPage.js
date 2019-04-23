@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {NavLink} from 'react-router-dom';
+import { Button, Popover, PopoverBody } from 'reactstrap';
 import './LoginPage.scss';
+import PropTypes from 'prop-types';
 import signInLogo from '../../../assets/icons/x-logo-sign-in.svg';
 import IcoSignIn from '../../../assets/icons/ico-signin.png';
 import IcoCatalog from '../../../assets/icons/catalog.png';
@@ -11,19 +14,26 @@ import IcoSupport from '../../../assets/icons/support.png';
 import IcoClose from '../../../assets/icons/ico-close.png';
 import IcoInfo from '../../../assets/icons/ico-info.png';
 import Iframe from '../../../components/Iframe/Iframe';
-import {NavLink} from 'react-router-dom';
-import { Button, Popover, PopoverBody } from 'reactstrap';
+import FloatingOutlineInput from '../../../components/FloatingOutlineInput/FloatingOutlineInput';
+import {login} from '../../../services/api/httpclient';
+import { Form, Checkbox } from 'antd';
 
+
+const FormItem = Form.Item;
 const iframe = '<iframe width="80%" height="315" src="https://www.youtube.com/embed/ybcV0sJ_T_I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 
 class LoginPage extends Component {
     constructor(props) {
         super(props);
-        this.state = { popoverOpen: false, expanded:'', mobile_info: false };
+        this.state = { 
+            popoverOpen: false, 
+            expanded:'', 
+            mobile_info: false,
+        };
     }
 
     componentDidMount() {
-
+       
     }
 
     togglePopover() {
@@ -46,7 +56,41 @@ class LoginPage extends Component {
         this.setState({mobile_info:false});
     }   
 
+    onSignIn = () => {
+        var formData = this.props.form.getFieldsValue();
+        console.log(formData);
+
+        login(formData).then(ret=>{
+            console.log(ret);
+        }, err=>{
+            console.log(err);
+            // this.props.form.setFields({
+            //     email: {
+            //         value: username,
+            //         errors: [new Error('Error')],
+            //     }
+            // });
+        });
+    }
+    
+    checkEmail = (rule, value, callback) => {
+        callback();
+    }
+
+    onUserNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            username: evt.target.value,
+        });
+    }
+
+    onPasswordChange = (evt) => {
+        this.props.form.setFieldsValue({
+            password: evt.target.value,
+        });
+    }
+
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
             <div id="div-content" style={{height:'100%'}}>
                 <nav className="navbar">
@@ -93,22 +137,34 @@ class LoginPage extends Component {
                                         Sign In
                                     </label>
                                 </div>
-                                
                                 <hr/>
+                                
+                                <Form >
+                                    <FormItem>
+                                        {getFieldDecorator('username', {
+                                            rules: [{required: true, message: 'Please input your email!'}, {validator: this.checkEmail}, {validateOn:'change'}],
+                                        })(
+                                            <FloatingOutlineInput type="email" label='Email' onChange={this.onUserNameChange.bind(this)} style={{marginTop:'2vh'}}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+                                    <FormItem>
+                                        {getFieldDecorator('password', {
+                                            rules: [{required: true, message: 'Please input your password!'}, {validator: this.checkEmail}, {validateOn:'change'}],
+                                        })(
+                                            <FloatingOutlineInput type="password" label='Password' onChange={this.onPasswordChange.bind(this)} style={{marginTop:'5vh'}}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+                                </Form>
 
-                                <input type = "email" className="form-control form-email" placeholder="Email" required/>
-                                <input type = "password" className="form-control form-password" placeholder="Password" required/>
                                 <div style={{marginTop:'5px'}}><NavLink to={'/forgotpassword/'} className="label-forgotpassword">Forgot Your password?</NavLink></div>
+                                
 
-                                <div className="form-check check-rememberme v-gap">
-                                    <input className="form-check-input" style={{marginTop:'8px'}} type="checkbox" name="login_remember_me" id="login_remember_me" value="true"/>
-                                    <label className="label-rememberme form-check-label" htmlFor="login_remember_me">
-                                        Remember me
-                                    </label>
-                                </div>
+                                <Checkbox style={{color:'white', marginTop:'15px', fontSize:'13px', marginLeft:'10px', marginBottom:'10px'}}>Remember Me</Checkbox>
 
                                 <div className="text-center v-gap">
-                                    <button type="submit" className="btn btn-green-gradient">
+                                    <button type="submit" className="btn btn-green-gradient" onClick={this.onSignIn.bind(this)}>
                                         <img src={IcoSignIn} />
                                         <span className="lbl-signin">&nbsp;&nbsp;Sign in</span>
                                     </button>
@@ -167,7 +223,7 @@ class LoginPage extends Component {
 }
 
 LoginPage.propTypes = {
-
+    form :  PropTypes.object
 };
 
 
@@ -180,4 +236,6 @@ const mapDispatchToProps = dispatch => (
     bindActionCreators({}, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+const WrappedLoginPage = Form.create()(LoginPage);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedLoginPage);
