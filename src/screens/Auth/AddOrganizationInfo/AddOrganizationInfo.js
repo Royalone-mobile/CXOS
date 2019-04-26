@@ -14,6 +14,9 @@ import IcoPopoverLogo from '../../../assets/icons/popover-logo.png';
 import IcoSupport from '../../../assets/icons/support.png';
 import IcoClose from '../../../assets/icons/ico-close.png';
 import IcoInfo from '../../../assets/icons/ico-info.png';
+import { Form, Checkbox } from 'antd';
+import FloatingOutlineInput from '../../../components/FloatingOutlineInput/FloatingOutlineInput';
+const FormItem = Form.Item;
 
 class AddOrganizationInfo extends Component {
     constructor(props) {
@@ -67,7 +70,14 @@ class AddOrganizationInfo extends Component {
         this.props.history.push('/signup');
     }
 
+    onUserNameChange = (evt) => {
+        this.props.form.setFieldsValue({
+            username: evt.target.value,
+        });
+    }
+
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
             <div id="div-content" style={{ height : '100%'}}>
                 <nav className="navbar">
@@ -132,60 +142,122 @@ class AddOrganizationInfo extends Component {
                                     <div className="float-right mobile-only"> <p className="lbl-required">*required</p></div>
                                 </div>
                                 
-                                <div className="form-check v-gap clearfix" style={{marginTop:'10px'}}>
-                                    <input className="form-check-input" style={{marginTop:'8px'}} type="checkbox" name="login_remember_me" id="login_remember_me" value="true"  checked={this.state.hasCXOSAcc} onChange={this.onToggleCXOSAcc.bind(this)}/>
-                                    <label className="label-rememberme form-check-label" htmlFor="login_remember_me">
-                                        This organization already has an AWS CXOS account
-                                    </label>
+                                <div className="v-gap clearfix" style={{marginTop:'10px'}}>
+                                    <Checkbox  checked={this.state.hasCXOSAcc} onChange={this.onToggleCXOSAcc.bind(this)} style={{color:'white', fontSize:'13px'}}>This organization already has an AWS CXOS account</Checkbox>
                                 </div>
 
                                 
                                 {this.state.hasCXOSAcc?<div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "text" className="form-control float-left form-signup-aws-account-id" placeholder="AWS Account ID" required/>
-                                    <input type = "text" className="form-control float-right form-signup-aws-account-role" placeholder="AWS Account Role" required/>
+                                    <FormItem className="float-left form-signup-aws-account-id">
+                                        {getFieldDecorator('awsid', {
+                                            rules: [{required: true, message: 'Please input AWS Acccount ID!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='AWS Account ID' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+
+                                    <FormItem className="float-right form-signup-aws-account-role">
+                                        {getFieldDecorator('awsrole', {
+                                            rules: [{required: true, message: 'Please input AWS Acccount Role!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='AWS Account Role' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
                                 </div> :null}
 
                                 {this.state.hasCXOSAcc?<hr className="clearfix"/>:null}
 
                                 <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "text" className="form-control float-left form-signup-organization" placeholder="Organization Name*" required/>
+                                    <FormItem className="float-left form-signup-organization">
+                                        {getFieldDecorator('organization', {
+                                            rules: [{required: true, message: 'Please input your organization name!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='Organization Name*' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+
+
                                     <div className="float-right form-layout-state">
-                                        <input type = "text" className="form-control float-left form-signup-phonenum" placeholder="Phone Number*" required/>
-                                        <div className="form-check v-gap float-left" style={{marginTop:'5px', marginLeft:'10px'}}>
-                                            <input className="form-check-input" style={{marginTop:'8px'}} type="checkbox" name="signup_mobile_sms" id="signup_mobile_sms" value="true"  checked={this.state.hasMobileSMS} onChange={this.onToggleSMS.bind(this)}/>
-                                            <label className="label-rememberme form-check-label" htmlFor="signup_mobile_sms">
-                                                Mobile for SMS
-                                            </label>
+                                        <FormItem className="float-left form-signup-phonenum">
+                                            {getFieldDecorator('phonenum', {
+                                                rules: [{required: true, message: 'Please input your phone number!'}],
+                                            })(
+                                                <FloatingOutlineInput type="text" label='Phone Number*' onChange={this.onUserNameChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>
+
+                                        <div className="float-left" style={{marginTop:'10px', marginLeft:'20px'}}>
+                                            <Checkbox style={{color:'white', fontSize:'13px'}}>Mobile for SMS</Checkbox>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "email" className="form-control form-signup-countryregion" placeholder="Country Region*" required/>
+                                    <FormItem className="form-signup-countryregion">
+                                        {getFieldDecorator('region', {
+                                            rules: [{required: true, message: 'Please input your country region!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='Country Region*' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
                                 </div>
 
                                 <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "text" className="form-control float-left form-signup-address1" placeholder="Address1*" required/>
-                                    <input type = "text" className="form-control float-right form-signup-address2" placeholder="Address2*" required/>
+                                    <FormItem className="float-left form-signup-address1">
+                                        {getFieldDecorator('address1', {
+                                            rules: [{required: true, message: 'Please input your address1!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='Address1*' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+                                    <FormItem className="float-right form-signup-address2">
+                                        {getFieldDecorator('address2', {
+                                            rules: [{required: true, message: 'Please input your address2!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='Address2*' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
                                 </div>
                                 
 
                                 <div className="clearfix layout-signup-form-line" style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                                    <input type = "text" className="form-control float-left form-signup-city" placeholder="City*" required/>
+                                    <FormItem className="float-left form-signup-city">
+                                        {getFieldDecorator('city', {
+                                            rules: [{required: true, message: 'Please input your city!'}],
+                                        })(
+                                            <FloatingOutlineInput type="text" label='City*' onChange={this.onUserNameChange.bind(this)}>
+                                            </FloatingOutlineInput>
+                                        )}
+                                    </FormItem>
+
                                     <div className="float-right form-layout-state">
                                         <select className="form-control  float-left form-signup-state">
-                                            <option value=''>State*</option>
-                                            <option value='1'>One</option>
-                                            <option value='2'>Two</option>
+                                            <option className="option-state" value=''>State*</option>
+                                            <option className="option-state" value='1'>One</option>
+                                            <option className="option-state" value='2'>Two</option>
                                         </select>
 
-                                        <input type = "text" className="form-control float-right form-signup-postalcode" placeholder="Postal code*" required/>
+                                        <FormItem className="float-right form-signup-postalcode">
+                                            {getFieldDecorator('postcode', {
+                                                rules: [{required: true, message: 'Please input your postal code!'}],
+                                            })(
+                                                <FloatingOutlineInput type="text" label='Postal code*' onChange={this.onUserNameChange.bind(this)}>
+                                                </FloatingOutlineInput>
+                                            )}
+                                        </FormItem>                                    
                                     </div>
                                 </div>
 
 
                                 <div className="text-center div-signup1-buttons">
-                                    <button onClick={this.onCancel.bind(this)} className="btn btn-dark btn-sm">
+                                    <button onClick={this.onCancel.bind(this)} className="btn btn-dark">
                                         Cancel
                                     </button>
 
@@ -229,7 +301,8 @@ class AddOrganizationInfo extends Component {
 }
 
 AddOrganizationInfo.propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    form :  PropTypes.object
 };
 
 // CONFIGURE REACT REDUX
@@ -241,4 +314,6 @@ const mapDispatchToProps = dispatch => (
     bindActionCreators({}, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddOrganizationInfo);
+const WrappedAddOrganizationInfo = Form.create()(AddOrganizationInfo);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedAddOrganizationInfo);

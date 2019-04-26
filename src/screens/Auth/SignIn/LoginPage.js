@@ -98,6 +98,7 @@ class LoginPage extends Component {
                         <Button id="Popover1" type="button" className="btn-burger">
                             <i className="fas fa-bars"></i>
                         </Button>
+
                         <p className="float-left navbar-title">Sign In</p>
                         <Popover  placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.togglePopover.bind(this)} className="popover-menu" delay={100}>
                             <PopoverBody>
@@ -139,7 +140,7 @@ class LoginPage extends Component {
                                 </div>
                                 <hr/>
                                 
-                                <Form >
+                                <Form>
                                     <FormItem>
                                         {getFieldDecorator('username', {
                                             rules: [{required: true, message: 'Please input your email!'}, {validator: this.checkEmail}, {validateOn:'change'}],
@@ -159,10 +160,7 @@ class LoginPage extends Component {
                                 </Form>
 
                                 <div style={{marginTop:'5px'}}><NavLink to={'/forgotpassword/'} className="label-forgotpassword">Forgot Your password?</NavLink></div>
-                                
-
                                 <Checkbox style={{color:'white', marginTop:'15px', fontSize:'13px', marginLeft:'10px', marginBottom:'10px'}}>Remember Me</Checkbox>
-
                                 <div className="text-center v-gap">
                                     <button type="submit" className="btn btn-green-gradient" onClick={this.onSignIn.bind(this)}>
                                         <img src={IcoSignIn} />
@@ -206,7 +204,7 @@ class LoginPage extends Component {
                                         Vivamus tempor nisl ac auctor pulvinar. Sed varius sem et egestas blandit. Aliquam vulputate, dolor nec sodales aliquam, tellus metus eleifend ex, sit amet condimentum neque sem vitae elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer lobortis tempus viverra. Nunc dictum, mi eu ullamcorper viverra, ex dolor commodo mauris, quis ultrices nisl nisl et lectus. Nulla convallis dolor ac erat rhoncus volutpat.
                                     </label>
 
-                                    <div className="text-center">
+                                    <div className="text-center layout-taketour">
                                         <button className="btn btn-green-gradient btn-taketour">
                                             <i className="fas fa-eye" />
                                             <span className="lbl-taketour">&nbsp;&nbsp;Take The Tour</span>

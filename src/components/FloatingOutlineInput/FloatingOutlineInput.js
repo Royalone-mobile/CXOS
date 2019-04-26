@@ -7,13 +7,10 @@ import './FloatingOutlineInput.scss';
 import { Input } from 'antd';
 
 class FloatingOutlineInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            floating: false,
-            username:''
-        };
-    }
+    state = {
+        floating: false,
+        username:''
+    };
 
     onFocus = () => {
         this.setState({floating:true});
@@ -33,10 +30,10 @@ class FloatingOutlineInput extends React.Component {
 
     render() {
         return (
-            <div className={'float-container ' + (this.state.floating?'active':'')} style={this.props.style}>
+            <div className={'float-container ' + (this.state.floating?'active':'')} style={this.props.style} onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)}>
                 <label>{this.props.label}</label>
                 {/* <input type="text" id="floatField1" className="form-control form-email " onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)}/> */}
-                <Input type={this.props.type} className="form-control" onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)} 
+                <Input type={this.props.type} className="form-control"  
                     onChange={this.onChange.bind(this)}/>
             </div>
         );

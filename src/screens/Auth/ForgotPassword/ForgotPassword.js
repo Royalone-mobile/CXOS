@@ -302,7 +302,7 @@ class ForgotPassword extends Component {
                                 </Form>
 
                                 <div className="text-center v-gap" style={{marginTop:'20px'}}>
-                                    <button onClick={this.onCancel.bind(this)} className="btn btn-dark btn-sm btn-forgotpassword-cancel">
+                                    <button onClick={this.onCancel.bind(this)} className="btn btn-dark btn-forgotpassword-cancel">
                                         Cancel
                                     </button>
                                     <button onClick={this.onContinue.bind(this)} className="btn btn-green-gradient btn-forgotpassword-continue">
@@ -339,7 +339,7 @@ class ForgotPassword extends Component {
                                         Vivamus tempor nisl ac auctor pulvinar. Sed varius sem et egestas blandit. Aliquam vulputate, dolor nec sodales aliquam, tellus metus eleifend ex, sit amet condimentum neque sem vitae elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer lobortis tempus viverra. Nunc dictum, mi eu ullamcorper viverra, ex dolor commodo mauris, quis ultrices nisl nisl et lectus. Nulla convallis dolor ac erat rhoncus volutpat.
                                     </label>
 
-                                    <div className="text-center">
+                                    <div className="text-center layout-taketour">
                                         <button className="btn btn-green-gradient btn-taketour">
                                             <i className="fas fa-eye" />
                                             <span className="lbl-taketour">&nbsp;&nbsp;Take The Tour</span>

@@ -135,9 +135,13 @@ input[type=checkbox]:focus {
 
 .form-signup-state {
     background: transparent !important;
-    color: #6C757D !important;
+    color: white !important;
     width: 48% !important;
     height: calc(2.25rem + 4px) !important;
+}
+
+.option-state {
+    color: #6C757D !important;
 }
     
 .div-terms-policy{
@@ -191,11 +195,6 @@ input[type=checkbox]:focus {
         margin: 0px !important;
     }
 
-    .form-control {
-        border: solid 1px #e6e3e3 !important;
-        background-color: #1b2932 !important;
-    }
-
     .add-organization-side-content {
         display: none;
         border-radius: 0px !important;
@@ -226,7 +225,11 @@ input[type=checkbox]:focus {
         width: 100% !important;
     }
 
-    .form-signup-state,
+    .form-signup-state {
+        width: 100% !important;
+        margin-top: 30px !important;
+    }
+    
     .form-signup-aws-account-id,
     .form-signup-aws-account-role,
     .form-signup-organization,
@@ -237,8 +240,8 @@ input[type=checkbox]:focus {
     .form-signup-city,
     .form-signup-postalcode {
         width: 100% !important;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 30px !important;
+        margin-bottom: 30px !important;
     }
 
     .layout-signup-form-line {
@@ -248,5 +251,11 @@ input[type=checkbox]:focus {
     .navbar-subtitle {
         display: none;
     }
+
+    .form-signup-state {
+        border: solid 1px #e6e3e3 !important;
+        background-color: #1b2932 !important;
+    }
+
 }
 

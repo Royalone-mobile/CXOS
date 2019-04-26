@@ -199,11 +199,6 @@ and (max-device-width : 736px) {
         margin: 0px !important;
     }
 
-    .form-control {
-        border: solid 1px #e6e3e3 !important;
-        background-color: #1b2932 !important;
-    }
-
     .signup-side-content {
         display: none;
         border-radius: 0px !important;
@@ -233,8 +228,8 @@ and (max-device-width : 736px) {
     
     .form-signup-firstname, .form-signup-lastname, .form-signup-email, .form-signup-password, .form-signup-confirmpassword {
         width: 100% !important;
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
+        margin-top: 30px !important;
+        margin-bottom: 30px !important;
     }
 
     .layout-signup-form-line {

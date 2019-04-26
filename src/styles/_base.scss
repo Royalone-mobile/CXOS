@@ -23,10 +23,15 @@ body {
     margin:0px !important;
 }
 
-html, #app {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
+html {
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
 
 .animated {
@@ -46,7 +51,6 @@ html, #app {
     animation-name: fadeIn;
  }
  
-
 .btn-green-gradient {
   color: #FFFFFF;
   background-color: #4CDAFC; background-image: -webkit-gradient(linear, left top, left bottom, from(#4CDAFC), to(#25B3F7));
@@ -172,8 +176,8 @@ p {
 }
 
 .form-control {
-  font-size: 13px !important;
-  padding: .575rem .75rem !important;
+  font-size: 13px;
+  padding: .575rem .75rem ;
 }
 
 hr {
@@ -239,6 +243,11 @@ hr {
 }
 
 @media only screen and (max-width:767px) {
+  .form-control {
+    border: solid 1px #e6e3e3;
+    background-color: #1b2932;
+  }
+
   .popover-item-text {
       display: none;
   }
@@ -299,7 +308,6 @@ hr {
     text-align: left;
   }
 
-  
   .popover-item-text {
       display: none;
   }
@@ -360,4 +368,24 @@ body {
 
 .ant-form-item {
   margin-bottom: 0px !important;
+}
+
+.ant-radio-inner {
+  border-width: 0px;
+  // background-color: #1890ff;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  background-color: #1890ff;
+}
+
+.ant-radio-inner::after {
+  width: 16px;
+  height: 16px;
+  left:0;
+  top: 0;
+}
+
+.ant-radio-checked::after{
+
 }
